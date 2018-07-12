@@ -8,15 +8,13 @@ pokemon_dataframe = pokemon_dataframe.reindex(np.random.permutation(pokemon_data
 
 train_size = 50
 iteration = 15000
-lr = 20  # learning rate
-# para_num =
+lr = 1  # learning rate
 
-X = tf.placeholder(tf.float32, [None, 1])
-w = tf.Variable(tf.zeros([1, 1]))
-w2 = tf.Variable(tf.zeros([1, 1]))
-w3 = tf.Variable(tf.zeros([1, 1]))
+X = tf.placeholder(tf.float32, [None, 3])
+w = tf.Variable(tf.zeros([3, 1]))
+w2 = tf.Variable(tf.zeros([3, 1]))
 b = tf.Variable(tf.zeros([1]))
-y = tf.matmul(tf.pow(X, 3), w3) + tf.matmul(tf.square(X), w2) + tf.matmul(X, w) + b
+y = tf.matmul(tf.square(X), w2) + tf.matmul(X, w) + b
 Y = tf.placeholder(tf.float32, [None, 1])
 
 # 成本函数 sum(sqr(y_-y))/n
@@ -29,10 +27,10 @@ init = tf.initialize_all_variables()
 sess = tf.Session()
 sess.run(init)
 
-x_train = [[a] for a in pokemon_dataframe.head(train_size)['cp']]
-y_train = [[a] for a in pokemon_dataframe.head(train_size)['cp_new']]
-x_test = [[a] for a in pokemon_dataframe.tail(75 - train_size)['cp']]
-y_test = [[a] for a in pokemon_dataframe.tail(75 - train_size)['cp_new']]
+x_train = pokemon_dataframe.head(train_size)[['cp','height','weight']].values
+y_train = pokemon_dataframe.head(train_size)[['cp_new']].values
+x_test = pokemon_dataframe.tail(75 - train_size)[['cp','height','weight']].values
+y_test = pokemon_dataframe.tail(75 - train_size)[['cp_new']].values
 
 history_cost = []
 
@@ -43,12 +41,10 @@ for i in range(iteration):
 
 w2_result = sess.run(w2)
 w_result = sess.run(w)
-w3_result = sess.run(w3)
 b_result = sess.run(b)
-print("w:%f" % w_result)
-print("w2:%f" % w2_result)
-print("w3:%f" % w3_result)
-print("b:%f" % b_result)
+print("w " + str(w_result))
+print("w2 " + str(w2_result))
+print("b " + str(b_result))
 print("train cost:%f" % sess.run(cost, feed_dict={X: x_train, Y: y_train}))
 print("test cost:%f" % sess.run(cost, feed_dict={X: x_test, Y: y_test}))
 
@@ -61,14 +57,14 @@ plt.savefig('cost_change.jpg')
 plt.show()
 
 #
-plt.plot(x_test, y_test, '.r')
-plt.plot(x_train, y_train, '.b')
-plt.title('red:test; blue:train')
-maxx = max(x_train + x_test)[0] * 1.1
-
-x_space = np.linspace(0, maxx, maxx * 10)
-plt.ylabel("b")
-plt.xlabel("iteration")
-plt.plot(x_space, sess.run(y, feed_dict={X: [[xx] for xx in x_space]}))
-plt.savefig('regression.jpg')
-plt.show()
+# plt.plot(x_test, y_test, '.r')
+# plt.plot(x_train, y_train, '.b')
+# plt.title('red:test; blue:train')
+# maxx = max(max(x_train),max(x_test))[0] * 1.1
+#
+# x_space = np.linspace(0, maxx, maxx * 10)
+# plt.ylabel("b")
+# plt.xlabel("iteration")
+# plt.plot(x_space, sess.run(y, feed_dict={X: [[xx] for xx in x_space]}))
+# plt.savefig('regression.jpg')
+# plt.show()
