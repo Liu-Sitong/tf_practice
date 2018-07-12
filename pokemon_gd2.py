@@ -7,7 +7,7 @@ pokemon_dataframe = pd.read_csv('pokemon.csv', sep=',')
 pokemon_dataframe = pokemon_dataframe.reindex(np.random.permutation(pokemon_dataframe.index))
 
 train_size = 50
-epochs = 5000
+iteration = 1000
 # para_num =
 
 X = tf.placeholder(tf.float32, [None, 1])
@@ -34,24 +34,33 @@ y_test = [[a] for a in pokemon_dataframe.tail(75 - train_size)['cp_new']]
 
 history_w = []
 history_b = []
+history_cost = []
 
-for i in range(epochs):
+for i in range(iteration):
     sess.run(train_step, feed_dict={X: x_train, Y: y_train})
     # print(sess.run(w))
     history_w.append(sess.run(w)[0])
     history_b.append(sess.run(b)[0])
+    history_cost.append(sess.run(cost, feed_dict={X: x_train, Y: y_train}))
 w_result = sess.run(w)
 b_result = sess.run(b)
 print("w:%f" % w_result)
 print("b:%f" % b_result)
+print("train cost:%f" % sess.run(cost, feed_dict={X: x_train, Y: y_train}))
+print("test cost:%f" % sess.run(cost, feed_dict={X: x_test, Y: y_test}))
 
 # print(history_w)
-plt.plot(range(len(history_w)), history_w)
+plt.plot(range(len(history_cost)), history_cost)
+plt.title('change of cost')
+plt.ylabel("cost")
+plt.xlabel("iteration")
+plt.savefig('cost_change.jpg')
 plt.show()
-plt.plot(range(len(history_b)), history_b)
-plt.show()
+
 plt.plot(x_test, y_test, '.')
 maxx = max(x_train)[0] * 1.1
+plt.ylabel("b")
+plt.xlabel("iteration")
 plt.plot([0, maxx], [b_result, maxx * w_result + b_result])
-
+plt.savefig('regression.jpg')
 plt.show()
