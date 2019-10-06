@@ -14,7 +14,7 @@ X = tf.placeholder(tf.float32, [None, 3])
 w = tf.Variable(tf.zeros([3, 1]))
 w2 = tf.Variable(tf.zeros([3, 1]))
 b = tf.Variable(tf.zeros([1]))
-y = tf.matmul(tf.square(X), w2) + tf.matmul(X, w) + b
+y = tf.sigmoid(tf.matmul(tf.square(X), w2) + tf.matmul(X, w) + b)
 Y = tf.placeholder(tf.float32, [None, 1])
 
 # 成本函数 sum(sqr(y_-y))/n
@@ -53,7 +53,7 @@ plt.plot(range(len(history_cost)), np.log(history_cost))
 plt.title('change of cost')
 plt.ylabel("log cost")
 plt.xlabel("iteration")
-plt.savefig('cost_change.jpg')
+# plt.savefig('cost_change.jpeg')
 plt.show()
 
 #
