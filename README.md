@@ -1,6 +1,6 @@
 I write these simple codes in this repo in the summer of 2018 to practice Tensorflow. It is inspired by online course of [Hung-yi Lee](<http://speech.ee.ntu.edu.tw/~tlkagk/>) and official Tensorflow [tutorials](<https://www.tensorflow.org/tutorials>).
 
-The data I was studying was some data of Pokémon. Basically I simply attempt to use gradient descent to find the relationship between the origin and new cp value of a Pokémon.
+The data I was studying was some data of Pokémon. Basically I simply attempted to use gradient descent to find the relationship between the origin and new cp value of a Pokémon.
 
 ## Linear function
 
